@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DAMAC Riverside Views — Client ROI Calculator</title>
+<title>DAMAC Riverside Views — Client ROI Calculator by George Varughese Kaimoottil</title>
 <style>
   :root {
     --gold: #C8A45A; --gold-pale: #E4C882; --gold-dark: #A8843A;
@@ -194,13 +194,18 @@
 <body>
 
 <header class="site-header">
-  <div class="logo">DAMAC RIVERSIDE VIEWS <span>Dubai Investment Park · Southern Corridor</span></div>
+  <div class="logo" style="display:flex; align-items:center; gap:10px;">
+  <img src="profile.png" alt="George Varughese Kaimoottil"
+    style="width:36px; height:36px; border-radius:50%; object-fit:cover;
+           border:2px solid var(--gold);">
+  DAMAC RIVERSIDE VIEWS <span>Created by George Varughese Kaimoottil</span>
+</div>
   <div class="header-badge">CLIENT ROI TOOL · Q1–Q2 2026</div>
 </header>
 
 <div class="container">
   <h1 class="page-title">Interactive Investment Calculator</h1>
-  <p class="page-sub">Adjust the parameters below to model your client's scenario. Dubai vs London comparison included.</p>
+  <p class="page-sub">Designed and developed by George Varughese Kaimoottil. Adjust parameters to model client scenarios.</p>
 
   <div class="tabs">
     <div class="tab active" onclick="switchTab('calc')">ROI Calculator</div>
@@ -209,7 +214,6 @@
     <div class="tab" onclick="switchTab('objections')">Objection Handler</div>
   </div>
 
-  <!-- ═══ TAB 1: CALCULATOR ═════════════════════════════════ -->
   <div id="tab-calc">
     <div class="section-title">Quick scenario presets</div>
     <div class="preset-row">
@@ -273,7 +277,6 @@
     <div class="insight" id="insight-box"></div>
   </div>
 
-  <!-- ═══ TAB 2: COMPARE ════════════════════════════════════ -->
   <div id="tab-compare" style="display:none">
     <div class="insight" style="margin-bottom:1.5rem">
       <p>Comparison uses your configured entry price and hold period. Dubai yield is your selected rate; London uses 2.5% Prime Central London net. London growth uses 1% p.a. (Savills H2 2025 forecast). Tax applies to London income only (UAE is always 0%).</p>
@@ -292,7 +295,6 @@
     <div class="insight" id="compare-insight"></div>
   </div>
 
-  <!-- ═══ TAB 3: GROWTH CHART ══════════════════════════════ -->
   <div id="tab-growth" style="display:none">
     <div class="card" style="margin-bottom:1rem">
       <div class="section-title" style="margin-top:0">Cumulative return over time — Dubai vs London</div>
@@ -331,7 +333,6 @@
     </div>
   </div>
 
-  <!-- ═══ TAB 4: OBJECTIONS ════════════════════════════════ -->
   <div id="tab-objections" style="display:none">
     <div class="insight" style="margin-bottom:1.5rem">
       <p>Use this as a live reference during client meetings. Click any objection to reveal the structured response.</p>
@@ -341,18 +342,17 @@
 </div>
 
 <footer class="site-footer">
-  <p>DAMAC Riverside Views · Dubai Investment Park · Southern Corridor · Q1–Q2 2026 · Confidential — For Agency Use Only</p>
+  <p>© 2026 Developed by George Varughese Kaimoottil · DAMAC Riverside Views · Dubai Investment Park · Confidential — For Agency Use Only</p>
   <p style="margin-top:4px">Sources: Knight Frank · Savills · JLL · DAMAC Sales Intelligence · Perplexity Market Research 2025–26 · HMRC · UAE GDRFA</p>
   <p style="margin-top:4px;color:#4A5A6A">All figures are indicative scenario projections only and do not constitute financial advice. Past performance does not guarantee future results.</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
-// ── STATE ──────────────────────────────────────────────
+// Logic remains unchanged...
 let TAX = 0, TAX_LABEL = 'UAE Golden Visa (0%)';
 let CHART = null;
 
-// ── UTILS ──────────────────────────────────────────────
 const fmt  = n => '£' + Math.round(n).toLocaleString('en-GB');
 const fmtK = n => {
   const a = Math.abs(n), s = n < 0 ? '-' : '';
@@ -365,7 +365,7 @@ const pctFmt = n => (Math.round(n*10)/10)+'%';
 function get(id){ return +document.getElementById(id).value; }
 
 function calcDubai(price, yld, growth, years, tax){
-  const entry = price * 0.04;                         // DLD
+  const entry = price * 0.04;
   const grossRent = price * (yld/100);
   const netRent   = grossRent * (1-tax);
   const totalIncome = netRent * years;
@@ -407,7 +407,6 @@ function setTax(rate, label, btn){
   update();
 }
 
-// ── MAIN UPDATE ────────────────────────────────────────
 function update(){
   const price  = get('s-price');
   const yld    = get('s-yield');
@@ -420,7 +419,6 @@ function update(){
   if(document.getElementById('tab-growth').style.display !== 'none')  renderGrowth(price,yld,growth,years);
 }
 
-// ── RESULTS TAB ────────────────────────────────────────
 function renderResults(D, L, price, yld, growth, years){
   const rg = document.getElementById('results-grid');
   const tiles = [
@@ -441,7 +439,6 @@ function renderResults(D, L, price, yld, growth, years){
       <div class="metric-sub">${s}</div>
     </div>`).join('');
 
-  // Bar chart
   const maxBar = Math.max(D.grossRent*years, 1);
   const bars = [
     ['Gross rental ('+years+'yr)',   D.grossRent*years,     '#7A8898'],
@@ -458,7 +455,6 @@ function renderResults(D, L, price, yld, growth, years){
       <div class="bar-num">${fmtK(v)}</div>
     </div>`).join('');
 
-  // Insight
   const mult = L.netRent > 0 ? Math.round(D.netRent/L.netRent*10)/10 : '∞';
   document.getElementById('insight-box').innerHTML = `<p>
     At <strong>${pctFmt(yld)}</strong> yield on <strong>${fmt(price)}</strong> over
@@ -474,7 +470,6 @@ function renderResults(D, L, price, yld, growth, years){
   </p>`;
 }
 
-// ── COMPARE TAB ────────────────────────────────────────
 function renderCompare(D, L, price, yld, years){
   const rows = [
     ['Entry cost',              fmt(D.entry)+' (DLD 4%)',       fmt(L.sdlt)+' (SDLT)'],
@@ -519,7 +514,6 @@ function renderCompare(D, L, price, yld, years){
   </p>`;
 }
 
-// ── GROWTH CHART ───────────────────────────────────────
 function renderGrowth(price, yld, growth, years){
   const labels=[], dCap=[], dRet=[], lRet=[];
   let dInc=0, lInc=0, dVal=price, lVal=price;
@@ -576,11 +570,9 @@ function renderGrowth(price, yld, growth, years){
     }
   });
 
-  // Year-by-year table
   const yb = document.getElementById('yearby-body');
   yb.innerHTML = '';
   for(let y=1;y<=Math.max(years,10);y++){
-    const di = dRet[y] - dRet[y-1] + calcLondon(price,years,TAX).sdlt/10; // approx
     const d = { val: Math.round(price*Math.pow(1+growth/100,y)),
                 ret: dRet[y], inc: Math.round(price*(yld/100)*(1-TAX)*y) };
     const l = { val: Math.round(price*Math.pow(1.01,y)), ret: lRet[y] };
@@ -597,7 +589,6 @@ function renderGrowth(price, yld, growth, years){
   }
 }
 
-// ── OBJECTIONS ─────────────────────────────────────────
 const OBJECTIONS = [
   { q:'"Dubai prices might correct"',
     lon:'London prime is already correcting: Savills forecasts −3.9% to −2% in H2 2025. The market you are "safe" in is declining.',
@@ -662,7 +653,6 @@ function toggleObj(i){
   chev.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
 }
 
-// ── PRESETS ────────────────────────────────────────────
 const PRESETS = {
   starter:  { price:400000, yield:7,   growth:6,  hold:5 },
   standard: { price:750000, yield:8,   growth:7,  hold:5 },
@@ -679,7 +669,6 @@ function loadPreset(key){
   update();
 }
 
-// ── TAB SWITCHING ──────────────────────────────────────
 function switchTab(tab){
   ['calc','compare','growth','objections'].forEach(t=>{
     document.getElementById('tab-'+t).style.display = t===tab?'block':'none';
@@ -695,7 +684,6 @@ function switchTab(tab){
   if(tab==='objections') renderObjections();
 }
 
-// ── INIT ───────────────────────────────────────────────
 ['s-price','s-yield','s-growth','s-hold'].forEach(id=>{
   const el=document.getElementById(id);
   const outId=id.replace('s-','v-');
